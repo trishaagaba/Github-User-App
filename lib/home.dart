@@ -36,7 +36,8 @@ class _HomePageState  extends State<HomePage>{
         print('Searching');
       }
     }
-    final response = await http.get(Uri.parse("https://api.github.com/users/{username}"));
+    // final response = await http.get(Uri.parse("https://api.github.com/search/users?q=location:{location}"));
+    final response = await http.get(Uri.parse("https://api.github.com/search/users?q=location:$query"));
     if (kDebugMode) {
       print(response);
     }
@@ -58,12 +59,15 @@ class _HomePageState  extends State<HomePage>{
   Widget build(BuildContext context) {
 
     return MaterialApp(
+      debugShowCheckedModeBanner : false,
+
       home: Scaffold(
         body: Column(
           // mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget> [
             Image.asset(
-            "assets/geolocator.jpg", fit: BoxFit.cover, height: 200,
+            "assets/geolocator.jpg",
+            fit: BoxFit.cover, height: 200,
             width: double.infinity,),
             const SizedBox(height: 40.0),
 
@@ -73,20 +77,23 @@ class _HomePageState  extends State<HomePage>{
                     )
               , ),
             const SizedBox(height: 40.0),
-            TextField(
-
-              controller: _controller,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0)
+            Container(
+              width: MediaQuery.of(context).size.width * 0.8,//80% of screen width
+              child: TextField(
+                controller: _controller,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.0)
+                    ),
+                    hintText: 'Search by location',
+                    suffixIcon: IconButton( onPressed: (){
+                      _searchUsers(_controller.text);
+                    }, icon: const Icon(Icons.search)
+                      ,)
                 ),
-                hintText: 'Search by location',
-                suffixIcon: IconButton( onPressed: (){
-                  _searchUsers(_controller.text);
-                }, icon: const Icon(Icons.search)
-                  ,)
               ),
             ),
+
             Expanded(
                 child: _hasSearched && _users.isNotEmpty ? listOfNames()
                     : baseBackground()),
@@ -94,21 +101,21 @@ class _HomePageState  extends State<HomePage>{
 
           ],
         ),
-      bottomNavigationBar: const BottomAppBar(
-        color: Colors.grey,
-        // Color: Colors.purple[50],
-          child: SizedBox(
-            height: 10.0,
-            child: Row(
-
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-
-
-              ],
-            ),
-
-      )),
+      // bottomNavigationBar: const BottomAppBar(
+      //   color: Colors.grey,
+      //   // Color: Colors.purple[50],
+      //     child: SizedBox(
+      //       height: 10.0,
+      //       child: Row(
+      //
+      //         mainAxisAlignment: MainAxisAlignment.spaceAround,
+      //         children: [
+      //
+      //
+      //         ],
+      //       ),
+      //
+      // )),
       ),
 
     );
@@ -157,10 +164,10 @@ class _HomePageState  extends State<HomePage>{
   }
 
   Widget baseBackground(){
-    return Column(
+    return const Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-
+          // ImageIcon("")
       ],
     );
   }
