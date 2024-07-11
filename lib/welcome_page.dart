@@ -7,7 +7,7 @@ class WelcomePage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black12,
+      backgroundColor: Colors.black,
       body: SafeArea(
       child: Center(
         child: Column(
@@ -30,13 +30,14 @@ class WelcomePage extends StatelessWidget{
             //       color: Colors.black,
             //       fontSize: 30,fontWeight: FontWeight.bold
             //   ),),
-            const SizedBox(height: 40),
+            // const SizedBox(height: 40),
             const Text("GITHUB USERS",
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 30,fontWeight: FontWeight.bold
               ),),
-            const SizedBox(height: 360),
+
+            const SizedBox(height: 200),
 
               // child:Align(alignment: Alignment.bottomCenter,
               ElevatedButton(

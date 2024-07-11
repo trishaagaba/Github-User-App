@@ -70,8 +70,10 @@ class UserProfilePage extends StatelessWidget {
           final userDetails = snapshot.data!;
           return Scaffold(
             appBar: AppBar(
+
               title: Text(userDetails['login']),
               backgroundColor: Colors.black12,
+
                 actions: [
                   IconButton(icon: const Icon(Icons.share),
                   onPressed: (){
@@ -87,16 +89,27 @@ class UserProfilePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ClipOval(
-                    child: SizedBox(
+
+                    child: Container(
+                      color: Colors.pinkAccent,
+                      // width: double.infinity,
+                      child: SizedBox(
                       width: 100,
                       height: 100,
                       child: Image.network(userDetails['avatar_url'], fit: BoxFit.cover),
                     ),
+                    ),
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    'Username: ${userDetails['login']}',
-                    style: const TextStyle(fontSize: 20),
+                    '${userDetails['login']}',
+                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 10),
+
+                  Text(
+                     '${userDetails['location']}',
+                    style: const TextStyle(fontSize: 16 , ),
                   ),
                   const SizedBox(height: 10),
                   Text(

@@ -69,13 +69,20 @@ class _HomePageState  extends State<HomePage>{
             "assets/geolocator.jpg",
             fit: BoxFit.cover, height: 200,
             width: double.infinity,),
-            const SizedBox(height: 40.0),
+            // const SizedBox(height: 40.0),
+        Container(
+          alignment: Alignment.center,
+          color: Colors.black,
+          width: double.infinity,
 
-            const Text('GITHUB USERS',
+          child : const Text('GITHUB USERS',
+
                 style: TextStyle(
+                  color: Colors.white,
                     fontSize: 24.0,fontWeight: FontWeight.bold,
                     )
               , ),
+        ),
             const SizedBox(height: 40.0),
             Container(
               width: MediaQuery.of(context).size.width * 0.8,//80% of screen width
@@ -101,21 +108,21 @@ class _HomePageState  extends State<HomePage>{
 
           ],
         ),
-      // bottomNavigationBar: const BottomAppBar(
-      //   color: Colors.grey,
-      //   // Color: Colors.purple[50],
-      //     child: SizedBox(
-      //       height: 10.0,
-      //       child: Row(
-      //
-      //         mainAxisAlignment: MainAxisAlignment.spaceAround,
-      //         children: [
-      //
-      //
-      //         ],
-      //       ),
-      //
-      // )),
+      bottomNavigationBar: const BottomAppBar(
+        color: Colors.grey,
+        // Color: Colors.purple[50],
+          child: SizedBox(
+            // height: 10.0,
+            child: Row(
+
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+  // IconButton(onPressed: onPressed, icon: Icon.)
+
+              ],
+            ),
+
+      )),
       ),
 
     );
