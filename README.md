@@ -1,16 +1,14 @@
-# git_user_app
+**GIT-USER-APP**
+This is an app that lets you search about Github users from all over the world and view the different profiles of these users.
 
-A new Flutter project.
+**Design of the app**
+The app was designed using Figma and below are some of the designs made for the different app screens.
 
-## Getting Started
+**Technologies used
+Android Studio
+Flutter
 
-This project is a starting point for a Flutter application.
+**API used for this app**
+To access this data, I used the github api - https://api.github.com/search/users?q=location:location to search for these users by location and https://api.github.com/users/.username to access the user profiles.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
