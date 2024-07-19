@@ -11,9 +11,9 @@ class UserRepositoryImpl implements UserRepository {
   UserRepositoryImpl(this._dataSource);
 
   @override
-  Future<DataState<List<UserEntity>>> getUsers(String query) async {
+  Future<DataState<List<UserEntity>>> getUsers(String query, int page, int pageSize) async {
     try {
-      final List<dynamic> users = await _dataSource.fetchUsersByLocation(query);
+      final List<dynamic> users = await _dataSource.fetchUsersByLocation(query, page, pageSize);
       // Convert UserModel to UserEntity if necessary
       final List<UserEntity> userEntities = users.map((user) => UserEntity(
         name: user.login,

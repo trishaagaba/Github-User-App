@@ -18,6 +18,7 @@ class UserProvider extends ChangeNotifier{
   bool get hasSearched => _hasSearched;
 
   static const _pageSize = 20;
+  // final PagingController<int,UserEntity> pagingController = PagingController(firstPageKey: 0); this error??
   final PagingController<int,dynamic> pagingController = PagingController(firstPageKey: 0);
 
 
@@ -33,11 +34,18 @@ class UserProvider extends ChangeNotifier{
     try{
       final users = await _dataSource.fetchUsersByLocation(query, pageKey, _pageSize);
 
+      // for (var user in users) {
+      //   final userDetails = await fetchUsers(user['url']);
+      //   users.addAll(userDetails as Iterable);
+      // }
+
       final isLastPage = users.length < _pageSize;
           if(isLastPage){
             pagingController.appendLastPage(users);
           } else {
+            // final nextPageKey = pageKey + users.length;
             final nextPageKey = pageKey + 1;
+
             pagingController.appendPage(users, nextPageKey);
     }
        _originalUsers.addAll(users);
@@ -54,26 +62,10 @@ class UserProvider extends ChangeNotifier{
     }
   }
 
-  void applyFilters(String name, String type, int followers, int following){
-    final filteredUsers = _users.where((user){
-      final matchesName = name.isEmpty || user['login'].toLowerCase().contains(name.toLowerCase());
-      final matchesType = type.isEmpty || user['type'].toLowerCase().contains(type.toLowerCase());
+  // Future<Map<String, dynamic>> fetchDetails(String userUrl) async {
+  //   return await _dataSource.fetchUsers(userUrl);
+  // }
 
-      final userFollowers = user['followers'] ?? 0;
-      final userFollowing = user['following'] ?? 0;
-
-      final matchesFollowers = followers == 0 || userFollowers >= followers;
-      final matchesFollowing = following == 0 || userFollowing >= following;
-
-      return matchesName && matchesType && matchesFollowers && matchesFollowing;
-    }).toList();
-
-    if (kDebugMode) {
-      print('Filtered Users: $filteredUsers');
-    }
-    _setUsers(filteredUsers);
-    notifyListeners();
-  }
 
 
   void _setUsers(List<dynamic> users){
@@ -108,7 +100,6 @@ class UserProvider extends ChangeNotifier{
     fetchUsersByLocation('',0);
     notifyListeners();
   }
-
 
   // Future<List<dynamic>> fetchUserDetails(String username) async {
   //   final response = await _dataSource.fetchUserDetails(username);

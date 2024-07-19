@@ -22,11 +22,4 @@ class UserProfileModel extends UserEntity{
     );
   }
 }
-//
-// class UserDetail{
-//   login
-//   avatarurl
-//   htmlurl
-//   name
-//   bio
-// }
+

@@ -3,7 +3,7 @@ import '../../../../core/resources/data_state.dart';
 //domain layer only contains the interfaces
 
 abstract class UserRepository{
-  Future<DataState<List<UserEntity>>> getUsers(String query);
+  Future<DataState<List<UserEntity>>> getUsers(String query, int page, int pageSize);
 
   // Future<DataState<List<UserEntity>>> getUsers(String query, int page, int pageSize);
 }

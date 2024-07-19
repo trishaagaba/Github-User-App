@@ -2,10 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
 // import 'package:share_plus/share_plus.dart';
 
 class UserProfilePage extends StatelessWidget {
   final Map user;
+
+  void _launchURL(String url) async {
+    if (await canLaunchUrl(url as Uri)) {
+      await launchUrl(url as Uri);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   const UserProfilePage({super.key, required this.user});
 
@@ -131,6 +140,7 @@ class UserProfilePage extends StatelessWidget {
                        fontSize: 16,
                      ),
                    ),
+
                    Text(
                      '${userDetails['bio']}',
                      style: const TextStyle(
@@ -138,41 +148,43 @@ class UserProfilePage extends StatelessWidget {
                    ),
                    const SizedBox(height: 10),
                    Text(
-                     'Email: ${userDetails['email']}',
+                     'Email Address ${userDetails['email']}',
                      style: const TextStyle(fontSize: 16),
                    ),
-                   const SizedBox(height: 10),
-                   Text(
-                     'Type: ${userDetails['type']}',
-                     style: const TextStyle(fontSize: 16),
-                   ),
-                   Text(
-                     'Profile URL: ${userDetails['html_url']}',
-                     style: const TextStyle(fontSize: 16),
-                   ),
-
                    const SizedBox(height: 10),
                    Text(
                      'Public Repos: ${userDetails['public_repos']}',
                      style: const TextStyle(fontSize: 16),
                    ),
+                   const SizedBox(height: 10),
+
+                   Text(
+                     'Type: ${userDetails['type']}',
+                     style: const TextStyle(fontSize: 16),
+                   ),
+                   GestureDetector(
+                     onTap: () => _launchURL(userDetails['html_url']),
+                     child: Text(
+                       'Profile URL: ${userDetails['html_url']}',
+                       style: const TextStyle(
+                         fontSize: 16,
+                         color: Colors.blue, // Makes it look like a link
+                         decoration: TextDecoration.underline, // Underline to look like a link
+                       ),
+                     ),
+                   ),
+
+
                  ]
             ),
-
-                    // Container(
-                    //   child: Card(
-                    //
-                    //   ),
-                    // ),
-
-
           );
-
               // ),
             // ),
 
         }
       },
+
+
     );
   }
 }

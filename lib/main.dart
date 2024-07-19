@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:git_user_app/features/user_lists/presentation/providers/connectivity_provider.dart';
 import 'package:git_user_app/features/user_lists/presentation/providers/user_provider.dart';
 import 'package:provider/provider.dart';
-import "screens/splash.dart";
+import "features/user_lists/presentation/screens/splash.dart";
 
 
 void main() {

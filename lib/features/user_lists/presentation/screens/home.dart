@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:git_user_app/features/user_lists/domain/entities/user_entity.dart';
 import 'package:git_user_app/features/user_lists/presentation/providers/user_provider.dart';
 import 'package:git_user_app/features/user_lists/presentation/providers/connectivity_provider.dart';
 import 'package:git_user_app/features/user_profile/presentation/screens/user_profile_page.dart';
@@ -16,22 +15,19 @@ class HomePage extends StatefulWidget{
 }
 
 class _HomePageState  extends State<HomePage>{
- final TextEditingController _controller = TextEditingController();
- final PagingController<int, UserEntity> pagingController = PagingController(firstPageKey: 1);
+  final TextEditingController _controller = TextEditingController();
+ // final PagingController<int, UserEntity> pagingController = PagingController(firstPageKey: 1);
 
- List users = [];
-  bool hasSearched = false;
-  bool isLoading = true;
- final int _pageSize = 20;
-
+  List users = [];
+ //  bool hasSearched = false;
+ //  bool isLoading = true;
 
   @override
   void initState(){
     super.initState();
-    // _checkInternetConnection();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<UserProvider>(context, listen: false)
-          .fetchUsersByLocation('');
+          .fetchUsersByLocation('', 0);
     },
     );
 
@@ -120,7 +116,7 @@ class _HomePageState  extends State<HomePage>{
                 TextField(
                   onSubmitted: (query){
                      Provider.of<UserProvider>(context, listen: false)
-                         .fetchUsersByLocation(query);
+                         .fetchUsersByLocation(query, 0);
 
 
                   },
@@ -135,7 +131,7 @@ class _HomePageState  extends State<HomePage>{
                      icon: const Icon(Icons.search), onPressed: () {
                        // _pagingController.refresh();
                        Provider.of<UserProvider>(context, listen: false)
-                           .fetchUsersByLocation(_controller.text);
+                           .fetchUsersByLocation(_controller.text, 0);
                     }
                       ,),
                     
@@ -169,35 +165,29 @@ class _HomePageState  extends State<HomePage>{
           ],
         ),
       ),
-
     );
-
   }
+
+
   Widget listOfNames(List<dynamic> users){
+    final userProvider = Provider.of<UserProvider>(context);
     return
-    // return Column(
-    // children: [
-    //   const SizedBox(height: 10.0),
-    //     hasSearched? Text("Showing results for '${_controller.text}'...", style: const TextStyle(fontWeight: FontWeight.bold), ): welcomeText(),
-    //      const SizedBox(height: 10.0),
-    //      Expanded(
-    //      child:
-      ListView.builder(
-    //      PagedListView<int, dynamic>(
-    //        pagingController: _pagingController,
-    //       builderDelegate: PagedChildBuilderDelegate<dynamic>(
-          itemCount: users.length,
-          itemBuilder: (context, index){
-        return Expanded(
-            child:SizedBox(
-            // width: MediaQuery.of(context).size.width * 0.8,
-            child: Card(
+         PagedListView<int, dynamic>(
+           pagingController: userProvider.pagingController,
+          builderDelegate: PagedChildBuilderDelegate<dynamic>(
+          //itemCount: users.length,
+          itemBuilder: (context,user, index){
+            print("Accessing index: $index");
+
+            if (index >= users.length) {
+              return const SizedBox.shrink();
+            }
+        return Card(
               color: Colors.pink[50],
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0)
               ) ,
-          margin: const EdgeInsets.symmetric(vertical: 3.0 ),
-          
+          margin: const EdgeInsets.symmetric(vertical: 2.0 ),
 
           child: GestureDetector(
             onTap: () {
@@ -221,11 +211,11 @@ class _HomePageState  extends State<HomePage>{
               ),
             ),
           ),
-        ))));
+        ));
       },
-          );        // ),
-          // );
-         // ) ]
+          )
+         );
+
 
   }
   Widget welcomeText(){
@@ -283,5 +273,7 @@ void openSettings(){
       ('App-Prefs:root=WIFI');
     }
   }
+
+
 
 
