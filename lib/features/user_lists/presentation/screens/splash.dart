@@ -14,7 +14,7 @@ class _WelcomePageState extends State <WelcomePage> {
       super.initState();
       Timer(const Duration(seconds: 3),
               ()=>Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context)=>HomePage())));
+                  MaterialPageRoute(builder: (context)=>const HomePage())));
     }
 
   @override

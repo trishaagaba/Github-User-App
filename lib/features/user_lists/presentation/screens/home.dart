@@ -5,22 +5,26 @@ import 'package:git_user_app/features/user_lists/presentation/providers/user_pro
 import 'package:git_user_app/features/user_lists/presentation/providers/connectivity_provider.dart';
 import 'package:git_user_app/features/user_profile/presentation/screens/user_profile_page.dart';
 import 'package:provider/provider.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../widget/filter_widget.dart';
 
 
 class HomePage extends StatefulWidget{
+  const HomePage({super.key});
+
   @override
   State<HomePage> createState() => _HomePageState ();
 }
 
 class _HomePageState  extends State<HomePage>{
   final TextEditingController _controller = TextEditingController();
- // final PagingController<int, UserEntity> pagingController = PagingController(firstPageKey: 1);
+  // final PagingController<int, UserEntity> pagingController = PagingController(firstPageKey: 1);
+      final ScrollController _scrollController = ScrollController();
 
-  List users = [];
- //  bool hasSearched = false;
- //  bool isLoading = true;
+  // List users = [];
+  // bool hasSearched = false;
+  // bool isLoading = true;
+  // final int _limit = 20;
+  int _page = 0;
 
   @override
   void initState(){
@@ -31,6 +35,17 @@ class _HomePageState  extends State<HomePage>{
     },
     );
 
+  _scrollController.addListener((){
+    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent){
+      Provider.of<UserProvider>(context, listen: false).fetchUsersByLocation(_controller.text, ++_page);
+    }
+  });
+
+  // void fetchMore(){
+  //   if(!isLoading){
+  //
+  //   }
+  // }
   }
  void _clearFiltersAndSearch() {
    Provider.of<UserProvider>(context, listen: false).clearFiltersAndSearch();
@@ -45,7 +60,7 @@ class _HomePageState  extends State<HomePage>{
   if(!connectivityProvider.isConnected) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('No Internet Connection'),
+        title: const Text('No Internet Connection'),
       ),
       body: Center(
         child: ElevatedButton(
@@ -56,14 +71,14 @@ class _HomePageState  extends State<HomePage>{
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: Text("No Internet Connection"),
-                      content: Text("Please check your internet settings."),
+                      title: const Text("No Internet Connection"),
+                      content: const Text("Please check your internet settings."),
                       actions: [
                         TextButton(
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          child: Text("Cancel"),
+                          child: const Text("Cancel"),
                         ),
                         TextButton(
                           onPressed: () {
@@ -71,7 +86,7 @@ class _HomePageState  extends State<HomePage>{
                             // Redirect to phone settings
                             openSettings();
                           },
-                          child: Text("Settings"),
+                          child: const Text("Settings"),
                         ),
                       ],
                     );
@@ -80,7 +95,7 @@ class _HomePageState  extends State<HomePage>{
               }
             });
           },
-          child: Text('Check Connection'),
+          child: const Text('Check Connection'),
         ),
       ),
     );
@@ -93,7 +108,7 @@ class _HomePageState  extends State<HomePage>{
           children: <Widget> [
             Image.asset("assets/geolocator.jpg",
             fit: BoxFit.cover,
-              height: 150,
+              height: 100,
             width: double.infinity,),
         Container(
           alignment: Alignment.center,
@@ -101,24 +116,23 @@ class _HomePageState  extends State<HomePage>{
           width: double.infinity,
 
           child : const Text('GITHUB USERS',
-
                 style: TextStyle(
                   color: Colors.white,
                     fontSize: 24.0,fontWeight: FontWeight.bold,
                     )
               , ),
         ),
-            const SizedBox(height: 10.0),
+            // const SizedBox(height: 10.0),
              SizedBox(
               // width: MediaQuery.of(context).size.width * 0.8,//80% of screen width
-              child: Row(children:[
+              child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(children:[
                 Expanded(child:
                 TextField(
                   onSubmitted: (query){
                      Provider.of<UserProvider>(context, listen: false)
                          .fetchUsersByLocation(query, 0);
-
-
                   },
                 controller: _controller,
                 decoration: InputDecoration(
@@ -139,7 +153,7 @@ class _HomePageState  extends State<HomePage>{
               ),
                 ),
               IconButton(
-                icon: Icon(Icons.filter_list),
+                icon: const Icon(Icons.filter_list),
                   onPressed:(){
                     _showFilterDialog(context, (name, type,followers,following){
                       userProvider.applyFilters(name,type,followers,following);
@@ -148,76 +162,67 @@ class _HomePageState  extends State<HomePage>{
 
                   , ),
                 IconButton(
-                  icon: Icon(Icons.clear),
+                  icon: const Icon(Icons.clear),
                   onPressed: () {
                     _clearFiltersAndSearch();
                   },
                 ),]
               )
+              )
             ),
-            const SizedBox(height: 10.0),
+            // const SizedBox(height: 10.0),
             Expanded(
-                 child: userProvider.isLoading ? const Center(child: CircularProgressIndicator(),)
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: userProvider.isLoading ? const Center(child: CircularProgressIndicator(),)
                      :userProvider.hasSearched && userProvider.users.isNotEmpty ?
-                      listOfNames(userProvider.users)
-                    :listOfNames(userProvider.users)),
-
+                      ListView.builder(
+                      controller: _scrollController,
+                      itemCount: userProvider.users.length + 1,
+                      itemBuilder: (context, index) {
+                        if (index == userProvider.users.length) {
+                          return
+                        const SizedBox.shrink();
+                        }
+                        return Card(
+                          color: Colors.pink[50],
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0)),
+                          margin: const EdgeInsets.symmetric(vertical: 2.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (counter) =>
+                                    UserProfilePage(user: userProvider.users[index])),
+                              );
+                            },
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                    userProvider.users[index]['avatar_url']),
+                              ),
+                              title: Padding(
+                                padding: const EdgeInsets.only(left: 16.0),
+                                child: Text(userProvider.users[index]['login']),
+                              ),
+                              subtitle: Padding(
+                                padding: const EdgeInsets.only(left: 16.0),
+                                child: Text(userProvider.users[index]['type']),
+                              ),
+                            ),
+                          ),
+                        );
+                      }): const Text("Oops Something went wrong")
+            )
+    )
           ],
         ),
-      ),
+        )
+
     );
   }
 
-
-  Widget listOfNames(List<dynamic> users){
-    final userProvider = Provider.of<UserProvider>(context);
-    return
-         PagedListView<int, dynamic>(
-           pagingController: userProvider.pagingController,
-          builderDelegate: PagedChildBuilderDelegate<dynamic>(
-          //itemCount: users.length,
-          itemBuilder: (context,user, index){
-            print("Accessing index: $index");
-
-            if (index >= users.length) {
-              return const SizedBox.shrink();
-            }
-        return Card(
-              color: Colors.pink[50],
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)
-              ) ,
-          margin: const EdgeInsets.symmetric(vertical: 2.0 ),
-
-          child: GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (counter)=> UserProfilePage(user: users[index])
-              ));
-            },
-            child: Container(
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: NetworkImage(users[index]['avatar_url']),
-                ),
-                title: Padding(
-                  padding: const EdgeInsets.only(left: 16.0),
-                  child: Text(users[index]['login']), ),
-        subtitle: Padding(
-        padding: const EdgeInsets.only(left: 16.0),
-        child: Text(users[index]['type']),
-
-              ),
-            ),
-          ),
-        ));
-      },
-          )
-         );
-
-
-  }
   Widget welcomeText(){
     return const Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -239,11 +244,11 @@ class _HomePageState  extends State<HomePage>{
  showDialog(
    context: context,
    builder: (BuildContext context) {
- return Container(
+ return SizedBox(
    width: MediaQuery.of(context).size.width*0.8,
      height: MediaQuery.of(context).size.height*0.8,
     child:  AlertDialog(
-   title: Text('Filter Options'),
+   title: const Text('Filter Options'),
    content: FilterWidget(
    onFilterChanged: onFilterChanged,
    ),
@@ -252,7 +257,7 @@ class _HomePageState  extends State<HomePage>{
    TextButton(
    onPressed: (){
    Navigator.of(context).pop();
-   }, child: Text('Cancel')),
+   }, child: const Text('Cancel')),
 
 
    ],

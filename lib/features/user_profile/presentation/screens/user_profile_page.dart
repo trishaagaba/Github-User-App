@@ -116,13 +116,13 @@ class UserProfilePage extends StatelessWidget {
                               children: [
                                 Column(
                                   children: [
-                                    Text('${userDetails['followers']}',style: TextStyle(fontWeight: FontWeight.bold),),
+                                    Text('${userDetails['followers']}',style: const TextStyle(fontWeight: FontWeight.bold),),
                                     const Text("Followers")
                                   ],
                                 ),
                                 Column(
                                   children: [
-                                    Text('${userDetails['following']}',style: TextStyle(fontWeight: FontWeight.bold)),
+                                    Text('${userDetails['following']}',style: const TextStyle(fontWeight: FontWeight.bold)),
                                     const Text("Following")
                                   ],
                                 ),]

@@ -1,9 +1,7 @@
-import 'dart:convert';
 import 'package:git_user_app/core/resources/data_state.dart';
 import 'package:git_user_app/features/user_lists/data/datasources/remote/data_source.dart';
 import 'package:git_user_app/features/user_lists/domain/entities/user_entity.dart';
 import 'package:git_user_app/features/user_lists/domain/repository/user_repository.dart';
-import '../models/user.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final DataSource _dataSource;

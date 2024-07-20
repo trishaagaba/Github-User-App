@@ -1,10 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:git_user_app/features/user_lists/data/datasources/remote/data_source.dart';
-import 'package:git_user_app/features/user_lists/domain/entities/user_entity.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-// state management related to user data(loading, searched status)
 class UserProvider extends ChangeNotifier{
   final DataSource _dataSource = DataSource();
 
@@ -18,14 +14,6 @@ class UserProvider extends ChangeNotifier{
   bool get hasSearched => _hasSearched;
 
   static const _pageSize = 20;
-  final PagingController<int,dynamic> pagingController = PagingController(firstPageKey: 0);
-
-
-  UserProvider() {
-    pagingController.addPageRequestListener((pageKey) {
-      fetchUsersByLocation('',pageKey);
-    });
-  }
 
 
   Future<void> fetchUsersByLocation(String query, int pageKey) async {
@@ -33,21 +21,15 @@ class UserProvider extends ChangeNotifier{
     try{
       final users = await _dataSource.fetchUsersByLocation(query, pageKey, _pageSize);
 
-      final isLastPage = users.length < _pageSize;
-          if(isLastPage){
-            pagingController.appendLastPage(users);
-          } else {
-            final nextPageKey = pageKey + 1;
-            pagingController.appendPage(users, nextPageKey);
+    _originalUsers.addAll(users);
+    _setUsers(users);
+    _setHasSearched(true);
+    notifyListeners();
     }
-       _originalUsers.addAll(users);
-      _setUsers(users);
-      _setHasSearched(true);
-    } catch(e){
-      pagingController.error = e;
+     catch(e){
       _setUsers([]);
       _setHasSearched(true);
-      _originalUsers = List.from(users);
+      // _originalUsers = List.from(users);
       print('Error fetching users: $e');
     }finally {
       _setLoading(false);
@@ -105,6 +87,7 @@ class UserProvider extends ChangeNotifier{
   void clearFiltersAndSearch() {
     _setUsers([]);
     _setHasSearched(false);
+    //when you clearf the search should clear
     fetchUsersByLocation('',0);
     notifyListeners();
   }

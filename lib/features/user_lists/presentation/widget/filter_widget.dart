@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class FilterWidget extends StatefulWidget {
   final Function(String, String, int, int) onFilterChanged;
 
-  FilterWidget({required this.onFilterChanged});
+  const FilterWidget({super.key, required this.onFilterChanged});
 
   @override
   _FilterWidgetState createState() => _FilterWidgetState();
@@ -24,17 +24,17 @@ class FilterWidget extends StatefulWidget {
         children: [
           TextField(
             controller: _nameController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'By name',
             ),
           ),
           TextField(
             controller: _typeController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'By type',
             ),
           ),
-          SizedBox(height: 16.0),
+          const SizedBox(height: 16.0),
           Column(
           children: [
           Row(
@@ -84,7 +84,7 @@ class FilterWidget extends StatefulWidget {
               );
               Navigator.of(context).pop();
             },
-            child: Text('Apply filters'),
+            child: const Text('Apply filters'),
           ),
         ],
       );

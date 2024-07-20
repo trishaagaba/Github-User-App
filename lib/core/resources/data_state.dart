@@ -1,4 +1,3 @@
-import 'package:http/http.dart' as http;
 //we are abt to communicate w network calls--using this wrapper class
 // in order to det the state of the request being sent to the server and its response
 // this wrapper class in important to wrap our network calls which is important when we have too many requests of logic

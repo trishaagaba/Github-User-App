@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:git_user_app/features/user_lists/data/datasources/remote/data_source.dart';
-import 'package:git_user_app/features/user_lists/domain/entities/user_entity.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 // state management related to user data(loading, searched status)

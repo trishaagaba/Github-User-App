@@ -12,7 +12,7 @@ void main() {
        ChangeNotifierProvider(create: (context)=> UserProvider(),),
        ChangeNotifierProvider(create: (_) => ConnectivityProvider()),
       ],
-      child: MyApp(),
+      child: const MyApp(),
   ),
   );
 }
