@@ -5,6 +5,7 @@ class UserModel extends UserEntity{
     final String ? name,
     final int ? id,
     final String ? url,
+    final String ? email,
     final String ? avatarUrl,
     final int ? followers,
     final int ? following,
@@ -15,6 +16,7 @@ class UserModel extends UserEntity{
       name: map['login'] ?? "",
       id: map['id'] ?? "",
       url: map['url'] ?? "",
+      email: map['email'] ?? "",
       avatarUrl: map['avatar_url'] ?? "",
       followers: map['followers'] ?? "",
       following: map['following'] ?? "",
@@ -22,11 +24,3 @@ class UserModel extends UserEntity{
     );
   }
 }
-//
-// class UserDetail{
-//   login
-//   avatarurl
-//   htmlurl
-//   name
-//   bio
-// }

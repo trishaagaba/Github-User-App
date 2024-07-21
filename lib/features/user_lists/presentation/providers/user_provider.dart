@@ -1,48 +1,81 @@
 import 'package:flutter/foundation.dart';
-import 'package:git_user_app/features/user_lists/data/datasources/remote/data_source.dart';
+import 'package:git_user_app/features/user_lists/domain/entities/user_entity.dart';
+import 'package:git_user_app/features/user_lists/domain/usecases/get_users_useCase.dart';
+
+
 
 class UserProvider extends ChangeNotifier{
-  final DataSource _dataSource = DataSource();
+  final GetUsersUseCase _getUsersUseCase;
 
-  List<dynamic> _users = [];
-  List<dynamic> _originalUsers = [];
+  UserProvider(this._getUsersUseCase);
+
+  List<UserEntity> _users = [];
+  final List<UserEntity> _originalUsers = [];
   bool _isLoading = false;
   bool _hasSearched = false;
+  bool _hasMore = true;
 
-  List<dynamic> get users => _users;
+  List<UserEntity> get users => _users;
   bool get isLoading => _isLoading;
   bool get hasSearched => _hasSearched;
+  bool get hasMore => _hasMore;
+
 
   static const _pageSize = 20;
+  int _currentPage = 0;
 
+  Future<void> fetchUsers(String query, int page, int pageSize)async {
+    if (_isLoading) return;
 
-  Future<void> fetchUsersByLocation(String query, int pageKey) async {
-    _setLoading(true);
-    try{
-      final users = await _dataSource.fetchUsersByLocation(query, pageKey, _pageSize);
+    await Future.delayed(const Duration(milliseconds: 500));
+    // _setLoading(true);
+   //notifyListeners();
+    try {
+      final newUsers = await _getUsersUseCase.execute(
+          query, _currentPage, _pageSize);
+      if (newUsers.isEmpty) {
+        _hasMore = false;
 
-    _originalUsers.addAll(users);
-    _setUsers(users);
-    _setHasSearched(true);
+      } else {
+        // final existingUserIds = _users.map((user) => user.name).toSet();
+        // final uniqueNewUsers = newUsers.where((user)
+        // => !existingUserIds.contains(user.name)).toList();
+        // _hasSearched = true;
+        // Avoid adding duplicates
+        final existingUserIds = _users.map((user) => user.name).toSet();
+        final uniqueNewUsers = newUsers.where((user) => !existingUserIds.contains(user.name)).toList();
+
+        if (uniqueNewUsers.isNotEmpty) {
+          _users.addAll(uniqueNewUsers);
+          _currentPage++;
+        }
+        // _users.addAll(newUsers);
+        // _currentPage++;
+        _hasMore = true;
+        print("real: $newUsers");
+      }
+    }
+      catch(e){
+      _isLoading = false;
+        _hasMore = false;
+        print('Error fetching users22: $e');
+
+    }
+
+    _isLoading = false;
     notifyListeners();
-    }
-     catch(e){
-      _setUsers([]);
-      _setHasSearched(true);
-      // _originalUsers = List.from(users);
-      print('Error fetching users: $e');
-    }finally {
-      _setLoading(false);
-    }
   }
+
 
   void applyFilters(String name, String type, int followers, int following){
     final filteredUsers = _users.where((user){
-      final matchesName = name.isEmpty || user['login'].toLowerCase().contains(name.toLowerCase());
-      final matchesType = type.isEmpty || user['type'].toLowerCase().contains(type.toLowerCase());
+      final matchesName = name.isEmpty;
+          // || user.name.toLowerCase().contains(name.toLowerCase());
+      final matchesType = type.isEmpty;
+          // || user.type.toLowerCase().contains(type.toLowerCase());
 
-      final userFollowers = user['followers'] ?? 0;
-      final userFollowing = user['following'] ?? 0;
+      final userFollowers = user.followers ?? 0;
+      final userFollowing = user.following ?? 0;
 
       final matchesFollowers = followers == 0 || userFollowers >= followers;
       final matchesFollowing = following == 0 || userFollowing >= following;
@@ -58,9 +91,9 @@ class UserProvider extends ChangeNotifier{
   }
 
 
-  void _setUsers(List<dynamic> users){
+  void _setUsers(List<UserEntity> users){
     _users = users;
-    notifyListeners();
+    //notifyListeners();
   }
 
   void _setLoading(bool isLoading) {
@@ -75,6 +108,7 @@ class UserProvider extends ChangeNotifier{
 
   void clearFilters(){
     _setUsers(_originalUsers);
+    _hasSearched = false;
     notifyListeners();
   }
 
@@ -87,8 +121,10 @@ class UserProvider extends ChangeNotifier{
   void clearFiltersAndSearch() {
     _setUsers([]);
     _setHasSearched(false);
-    //when you clearf the search should clear
-    fetchUsersByLocation('',0);
+    _currentPage = 0;
+    //when you clear, the search should clear
+    fetchUsers('',0,_pageSize);
+    _hasMore = true;
     notifyListeners();
   }
 

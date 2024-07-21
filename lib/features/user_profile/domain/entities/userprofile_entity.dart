@@ -3,7 +3,6 @@
 import 'package:equatable/equatable.dart';
 
 class UserProfileEntity extends Equatable{
-  //extends Equatable for easy value comparisons
   //define the Objects we need
   final String ? login;
   final String ? url;

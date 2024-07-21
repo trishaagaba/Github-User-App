@@ -3,7 +3,6 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:git_user_app/features/user_lists/presentation/providers/user_provider.dart';
 import 'package:git_user_app/features/user_lists/presentation/providers/connectivity_provider.dart';
-import 'package:git_user_app/features/user_profile/presentation/screens/user_profile_page.dart';
 import 'package:provider/provider.dart';
 import '../widget/filter_widget.dart';
 
@@ -17,36 +16,51 @@ class HomePage extends StatefulWidget{
 
 class _HomePageState  extends State<HomePage>{
   final TextEditingController _controller = TextEditingController();
-  // final PagingController<int, UserEntity> pagingController = PagingController(firstPageKey: 1);
-      final ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
+  static const double _scrollThreshold = 100.0;
 
   // List users = [];
-  // bool hasSearched = false;
+   bool hasSearched = false;
   // bool isLoading = true;
   // final int _limit = 20;
   int _page = 0;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<UserProvider>(context, listen: false)
-          .fetchUsersByLocation('', 0);
+          .fetchUsers('', 0, 20);
     },
     );
 
-  _scrollController.addListener((){
-    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent){
-      Provider.of<UserProvider>(context, listen: false).fetchUsersByLocation(_controller.text, ++_page);
-    }
-  });
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent - _scrollThreshold) {
+        final userProvider = Provider.of<UserProvider>(context, listen: false);
 
-  // void fetchMore(){
-  //   if(!isLoading){
-  //
-  //   }
-  // }
+        if (!userProvider.isLoading && userProvider.hasMore) {
+          // Increment page and fetch more users
+          userProvider.fetchUsers(_controller.text, ++_page, 20);
+        }
+      }
+    });
+    // _scrollController.addListener(() {
+    //   if (_scrollController.position.pixels ==
+    //       _scrollController.position.maxScrollExtent - _scrollThreshold) {
+    //     Provider.of<UserProvider>(context, listen: false).fetchUsers(
+    //         _controller.text, ++_page, 20);
+    //   }
+    // });
   }
+    @override
+    void dispose() {
+      _scrollController.dispose();
+      _controller.dispose();
+      super.dispose();
+    }
+
+
  void _clearFiltersAndSearch() {
    Provider.of<UserProvider>(context, listen: false).clearFiltersAndSearch();
  }
@@ -132,7 +146,7 @@ class _HomePageState  extends State<HomePage>{
                 TextField(
                   onSubmitted: (query){
                      Provider.of<UserProvider>(context, listen: false)
-                         .fetchUsersByLocation(query, 0);
+                         .fetchUsers(query, 0,20);
                   },
                 controller: _controller,
                 decoration: InputDecoration(
@@ -145,7 +159,7 @@ class _HomePageState  extends State<HomePage>{
                      icon: const Icon(Icons.search), onPressed: () {
                        // _pagingController.refresh();
                        Provider.of<UserProvider>(context, listen: false)
-                           .fetchUsersByLocation(_controller.text, 0);
+                           .fetchUsers(_controller.text, 0, 20);
                     }
                       ,),
                     
@@ -174,15 +188,19 @@ class _HomePageState  extends State<HomePage>{
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: userProvider.isLoading ? const Center(child: CircularProgressIndicator(),)
-                     :userProvider.hasSearched && userProvider.users.isNotEmpty ?
+                  child: userProvider.isLoading && userProvider.hasMore
+                      ? const Center(child: CircularProgressIndicator()):
+                 // child: userProvider.isLoading ? const Center(child: CircularProgressIndicator(),)
+                     //:userProvider.hasSearched || userProvider.users.isNotEmpty ?
                       ListView.builder(
                       controller: _scrollController,
-                      itemCount: userProvider.users.length + 1,
+                      itemCount: userProvider.users.length + 1 ,
                       itemBuilder: (context, index) {
+                        print('List length: ${userProvider.users.length}, Current index: $index');
                         if (index == userProvider.users.length) {
                           return
-                        const SizedBox.shrink();
+                         const Center(child: CircularProgressIndicator());
+                        // const SizedBox.shrink();
                         }
                         return Card(
                           color: Colors.pink[50],
@@ -191,29 +209,31 @@ class _HomePageState  extends State<HomePage>{
                           margin: const EdgeInsets.symmetric(vertical: 2.0),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (counter) =>
-                                    UserProfilePage(user: userProvider.users[index])),
-                              );
+                              null;
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(builder: (counter) =>
+                              //       UserProfilePage(user: userProvider.users[index])),
+                              // );
                             },
                             child: ListTile(
                               leading: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    userProvider.users[index]['avatar_url']),
+                                backgroundImage:
+                                NetworkImage(userProvider.users[index].avatar_url ?? 'https://via.placeholder.com/150'),
                               ),
                               title: Padding(
                                 padding: const EdgeInsets.only(left: 16.0),
-                                child: Text(userProvider.users[index]['login']),
+                                child: Text(userProvider.users[index].name ?? 'Unknown user'),
                               ),
                               subtitle: Padding(
                                 padding: const EdgeInsets.only(left: 16.0),
-                                child: Text(userProvider.users[index]['type']),
+                                child: Text(userProvider.users[index].type ?? 'Unknown type'),
                               ),
                             ),
                           ),
                         );
-                      }): const Text("Oops Something went wrong")
+                      })
+                      //: const Text("Oops Something went wrong")
             )
     )
           ],

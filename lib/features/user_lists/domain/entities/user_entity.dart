@@ -2,12 +2,14 @@
 //based on the url, we have login, type, repositories,followers, following--all under Items
 import 'package:equatable/equatable.dart';
 
+
 class UserEntity extends Equatable{
   //extends Equatable for easy value comparisons
   //define the Objects we need
   final String ? name;
   final String ? url;
   final String ? avatar_url;
+  final String ? email;
   final int ? followers;
   final int ? following;
   final String ? type;
@@ -19,6 +21,7 @@ class UserEntity extends Equatable{
     this.url,
     this.type,
     this.followers,
+    this.email,
     this.following,
     this.name,
     this.bio
@@ -32,6 +35,7 @@ class UserEntity extends Equatable{
       name,
       avatar_url,
       type,
+      email,
       url,
       following,
       followers
