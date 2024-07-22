@@ -4,20 +4,26 @@ import 'package:equatable/equatable.dart';
 
 class UserProfileEntity extends Equatable{
   //define the Objects we need
-  final String ? login;
+  final String ? name;
   final String ? url;
-  final String ? avatar_url;
+  final String ? type;
+  final int ? public_repos;
+  final String ? avatarUrl;
   final int ? followers;
+  final String ? email;
   final int ? following;
   final String ? bio;
 
   //define the constructor of  the class with these fields
 const UserProfileEntity({
-  this.avatar_url,
+  this.avatarUrl,
   this.url,
+  this.type,
+  this.public_repos,
   this.followers,
+  this.email,
   this.following,
-  this.login,
+  this.name,
   this.bio
 
 });
@@ -26,9 +32,11 @@ const UserProfileEntity({
   List<Object?> get props {
     //decides wc objects we should consider for comparison
     return [
-      login,
-      avatar_url,
+      name,
+      avatarUrl,
       url,
+      bio,
+      email,
       following,
       followers
     ];

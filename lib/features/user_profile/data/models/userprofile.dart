@@ -4,9 +4,11 @@ import 'package:git_user_app/features/user_lists/domain/entities/user_entity.dar
 class UserProfileModel extends UserEntity{
   const UserProfileModel({
     final String ? name,
-    final int ? id,
     final String ? email,
     final String ? url,
+    final String ? type,
+    final String ? bio,
+    final String ? public_repos,
     final String ? avatarUrl,
     final int ? followers,
     final int ? following,
@@ -15,12 +17,14 @@ class UserProfileModel extends UserEntity{
   factory UserProfileModel.fromJson(Map <String, dynamic> map){
     return UserProfileModel(
       name: map['login'] ?? "",
-      id: map['id'] ?? "",
       url: map['url'] ?? "",
+      bio : map['bio'] ?? '',
+      public_repos: map['public_repos'] ?? 0,
+      type : map['type'] ?? '',
       email: map['email'] ?? "",
       avatarUrl: map['avatar_url'] ?? "",
-      followers: map['followers'] ?? "",
-      following: map['following'] ?? "",
+      followers: map['followers'] ?? 0,
+      following: map['following'] ?? 0,
 
     );
   }

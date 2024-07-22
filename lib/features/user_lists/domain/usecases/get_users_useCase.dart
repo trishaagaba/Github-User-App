@@ -7,7 +7,7 @@ class GetUsersUseCase{
 
   GetUsersUseCase(this._userRepository);
 
-  Future<List<UserEntity>> execute (String query, int page, int pageSize) async {
-    return await _userRepository.getUsers(query, page, pageSize);
+  Future<List<UserEntity>> execute (String? location, String? name, int page, int pageSize) async {
+    return await _userRepository.getUsers(location,name, page, pageSize);
   }
 }

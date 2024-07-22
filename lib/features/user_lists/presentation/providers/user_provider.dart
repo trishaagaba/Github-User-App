@@ -14,8 +14,12 @@ class UserProvider extends ChangeNotifier{
   bool _isLoading = false;
   bool _hasSearched = false;
   bool _hasMore = true;
+  String? _location;
+  String? _name;
 
   List<UserEntity> get users => _users;
+
+
   bool get isLoading => _isLoading;
   bool get hasSearched => _hasSearched;
   bool get hasMore => _hasMore;
@@ -24,34 +28,49 @@ class UserProvider extends ChangeNotifier{
   static const _pageSize = 20;
   int _currentPage = 0;
 
-  Future<void> fetchUsers(String query, int page, int pageSize)async {
+  // String get location => _location;
+
+  void setLocation(String location){
+    _location = location;
+    _name = null;
+    _resetPagination();
+    fetchUsers(_location, _name, _currentPage, _pageSize);
+  }
+
+  void setName(String name){
+    _name = name;
+    _location = null;
+    _resetPagination();
+    fetchUsers(_location, _name, _currentPage, _pageSize);
+  }
+
+
+
+
+  Future<void> fetchUsers(String? location, String? name, int page, int pageSize)async {
     if (_isLoading) return;
 
     await Future.delayed(const Duration(milliseconds: 500));
-    // _setLoading(true);
+    //_setLoading(true);
    //notifyListeners();
     try {
       final newUsers = await _getUsersUseCase.execute(
-          query, _currentPage, _pageSize);
+          _location, _name, _currentPage, _pageSize);
       if (newUsers.isEmpty) {
         _hasMore = false;
 
       } else {
-        // final existingUserIds = _users.map((user) => user.name).toSet();
-        // final uniqueNewUsers = newUsers.where((user)
-        // => !existingUserIds.contains(user.name)).toList();
-        // _hasSearched = true;
-        // Avoid adding duplicates
+
         final existingUserIds = _users.map((user) => user.name).toSet();
         final uniqueNewUsers = newUsers.where((user) => !existingUserIds.contains(user.name)).toList();
 
         if (uniqueNewUsers.isNotEmpty) {
           _users.addAll(uniqueNewUsers);
-          _currentPage++;
+
         }
-        // _users.addAll(newUsers);
-        // _currentPage++;
+        _currentPage++;
         _hasMore = true;
+        _setHasSearched(true);
         print("real: $newUsers");
       }
     }
@@ -66,34 +85,9 @@ class UserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-
-  void applyFilters(String name, String type, int followers, int following){
-    final filteredUsers = _users.where((user){
-      final matchesName = name.isEmpty;
-          // || user.name.toLowerCase().contains(name.toLowerCase());
-      final matchesType = type.isEmpty;
-          // || user.type.toLowerCase().contains(type.toLowerCase());
-
-      final userFollowers = user.followers ?? 0;
-      final userFollowing = user.following ?? 0;
-
-      final matchesFollowers = followers == 0 || userFollowers >= followers;
-      final matchesFollowing = following == 0 || userFollowing >= following;
-
-      return matchesName && matchesType && matchesFollowers && matchesFollowing;
-    }).toList();
-
-    if (kDebugMode) {
-      print('Filtered Users: $filteredUsers');
-    }
-    _setUsers(filteredUsers);
-    notifyListeners();
-  }
-
-
   void _setUsers(List<UserEntity> users){
     _users = users;
-    //notifyListeners();
+    notifyListeners();
   }
 
   void _setLoading(bool isLoading) {
@@ -121,21 +115,23 @@ class UserProvider extends ChangeNotifier{
   void clearFiltersAndSearch() {
     _setUsers([]);
     _setHasSearched(false);
+    _resetPagination();
+    _clearTextFields();
+    fetchUsers(_location, null, _currentPage, _pageSize);
+    _hasMore = true;
+    notifyListeners();
+  }
+  void _resetPagination(){
+    _setUsers([]);
     _currentPage = 0;
-    //when you clear, the search should clear
-    fetchUsers('',0,_pageSize);
     _hasMore = true;
     notifyListeners();
   }
 
-
-  // Future<List<dynamic>> fetchUserDetails(String username) async {
-  //   final response = await _dataSource.fetchUserDetails(username);
-  //   final List<dynamic> detailedUsers = [];
-  //   for (var user in users) {
-  //     final userDetails = await fetchUsersByLocation(user['url']);
-  //     detailedUsers.add(userDetails);
-  //   }
-  // }
+  void _clearTextFields() {
+    _location = null;
+    _name = null;
+    notifyListeners();
+  }
 
 }

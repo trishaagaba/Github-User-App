@@ -2,9 +2,13 @@ import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:git_user_app/features/user_lists/presentation/providers/user_provider.dart';
+import 'package:git_user_app/features/user_profile/presentation/providers/user_profile_provider.dart';
 import 'package:git_user_app/features/user_lists/presentation/providers/connectivity_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../../../user_profile/presentation/screens/user_profile_page.dart';
 import '../widget/filter_widget.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 
 class HomePage extends StatefulWidget{
@@ -19,10 +23,8 @@ class _HomePageState  extends State<HomePage>{
   final ScrollController _scrollController = ScrollController();
   static const double _scrollThreshold = 100.0;
 
-  // List users = [];
+
    bool hasSearched = false;
-  // bool isLoading = true;
-  // final int _limit = 20;
   int _page = 0;
 
   @override
@@ -30,7 +32,7 @@ class _HomePageState  extends State<HomePage>{
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<UserProvider>(context, listen: false)
-          .fetchUsers('', 0, 20);
+          .fetchUsers('','', 0, 20);
     },
     );
 
@@ -38,20 +40,15 @@ class _HomePageState  extends State<HomePage>{
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent - _scrollThreshold) {
         final userProvider = Provider.of<UserProvider>(context, listen: false);
+        final userProfileProvider = Provider.of<UserProfileProvider>(context, listen: false);
+
 
         if (!userProvider.isLoading && userProvider.hasMore) {
           // Increment page and fetch more users
-          userProvider.fetchUsers(_controller.text, ++_page, 20);
+          userProvider.fetchUsers(_controller.text,'', ++_page, 20);
         }
       }
     });
-    // _scrollController.addListener(() {
-    //   if (_scrollController.position.pixels ==
-    //       _scrollController.position.maxScrollExtent - _scrollThreshold) {
-    //     Provider.of<UserProvider>(context, listen: false).fetchUsers(
-    //         _controller.text, ++_page, 20);
-    //   }
-    // });
   }
     @override
     void dispose() {
@@ -69,11 +66,14 @@ class _HomePageState  extends State<HomePage>{
   @override
   Widget build(BuildContext context) {
   final userProvider = Provider.of<UserProvider>(context);
+  final userProfileProvider = Provider.of<UserProfileProvider>(context);
+
   final connectivityProvider = Provider.of<ConnectivityProvider>(context);
 
   if(!connectivityProvider.isConnected) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('No Internet Connection'),
       ),
       body: Center(
@@ -90,7 +90,7 @@ class _HomePageState  extends State<HomePage>{
                       actions: [
                         TextButton(
                           onPressed: () {
-                            Navigator.pop(context);
+                            openSettings();
                           },
                           child: const Text("Cancel"),
                         ),
@@ -131,67 +131,49 @@ class _HomePageState  extends State<HomePage>{
 
           child : const Text('GITHUB USERS',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Color(0xFFF380E2),
                     fontSize: 24.0,fontWeight: FontWeight.bold,
                     )
               , ),
         ),
-            // const SizedBox(height: 10.0),
-             SizedBox(
-              // width: MediaQuery.of(context).size.width * 0.8,//80% of screen width
-              child: Padding(
+
+              Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(children:[
-                Expanded(child:
-                TextField(
-                  onSubmitted: (query){
-                     Provider.of<UserProvider>(context, listen: false)
-                         .fetchUsers(query, 0,20);
-                  },
-                controller: _controller,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Color(0xFF2E2E2E)),
-                        borderRadius: BorderRadius.circular(12.0)
+                    Expanded(
+                      child: TextField(
+                        decoration:
+                                        const InputDecoration(labelText: 'Search by location',
+                      border: OutlineInputBorder()),
+                        onSubmitted: (value){
+                      userProvider.setLocation(value);
+                        }
+                                        ),
                     ),
-                    hintText: 'Search by location',
-                    suffixIcon: IconButton(
-                     icon: const Icon(Icons.search), onPressed: () {
-                       // _pagingController.refresh();
-                       Provider.of<UserProvider>(context, listen: false)
-                           .fetchUsers(_controller.text, 0, 20);
-                    }
-                      ,),
-                    
-                ),
-              ),
-                ),
-              IconButton(
-                icon: const Icon(Icons.filter_list),
-                  onPressed:(){
-                    _showFilterDialog(context, (name, type,followers,following){
-                      userProvider.applyFilters(name,type,followers,following);
-                    });
-                  }
-
-                  , ),
-                IconButton(
-                  icon: const Icon(Icons.clear),
-                  onPressed: () {
-                    _clearFiltersAndSearch();
-                  },
-                ),]
-              )
-              )
+          SizedBox(width: 8),
+          Expanded(
+            child: TextField(
+                decoration:
+                const InputDecoration(labelText: 'Search by name',
+                    border: OutlineInputBorder()),
+                onSubmitted: (value){
+                  userProvider.setName(value);
+                }
             ),
-            // const SizedBox(height: 10.0),
+          ),
+                ]
+                  )
+              ),
+                TextButton(onPressed: _clearFiltersAndSearch,
+                    child: const Text("CLEAR", style: TextStyle(color: Colors.grey),)),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(20.0),
+                  // child: userProvider.isLoading && userProvider.hasMore
+                  //     ? const Center(child: CircularProgressIndicator()):
                   child: userProvider.isLoading && userProvider.hasMore
-                      ? const Center(child: CircularProgressIndicator()):
-                 // child: userProvider.isLoading ? const Center(child: CircularProgressIndicator(),)
-                     //:userProvider.hasSearched || userProvider.users.isNotEmpty ?
+                      ? const Center(child: CircularProgressIndicator(),)
+                     :userProvider.hasSearched || userProvider.users.isNotEmpty ?
                       ListView.builder(
                       controller: _scrollController,
                       itemCount: userProvider.users.length + 1 ,
@@ -203,19 +185,30 @@ class _HomePageState  extends State<HomePage>{
                         // const SizedBox.shrink();
                         }
                         return Card(
-                          color: Colors.pink[50],
+                          color: Colors.white70,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0)),
-                          margin: const EdgeInsets.symmetric(vertical: 2.0),
+                          margin: const EdgeInsets.symmetric(vertical: 4.0),
                           child: GestureDetector(
-                            onTap: () {
-                              null;
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(builder: (counter) =>
-                              //       UserProfilePage(user: userProvider.users[index])),
-                              // );
-                            },
+                                onTap: () async {
+                                  final userProfileProvider = Provider.of<UserProfileProvider>(context, listen: false);
+                                  await userProfileProvider.fetchUserProfile(userProvider.users[index].name ?? '');
+                                  if (userProfileProvider.user != null) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => UserProfilePage(user: userProfileProvider.user!),
+                                      ),
+                                    );
+                                  } else {
+                                    // Handle the case where the user profile is null
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text('Failed to load user profile'),
+                                        )
+                                    ); }
+                                },
+
                             child: ListTile(
                               leading: CircleAvatar(
                                 backgroundImage:
@@ -230,10 +223,12 @@ class _HomePageState  extends State<HomePage>{
                                 child: Text(userProvider.users[index].type ?? 'Unknown type'),
                               ),
                             ),
-                          ),
-                        );
+                          )
+                              );
                       })
-                      //: const Text("Oops Something went wrong")
+                      : const Center(child: Text("Welcome to the GitHub Users App "
+                      "where you can search and get in touch with thousands of Users"
+                      " for possible collaboration and inspiration.", textAlign: TextAlign.center,))
             )
     )
           ],
@@ -243,21 +238,6 @@ class _HomePageState  extends State<HomePage>{
     );
   }
 
-  Widget welcomeText(){
-    return const Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text("WELCOME TO 'GITHUB USERS'", style: TextStyle(fontWeight: FontWeight.bold ),),
-        SizedBox(height: 10.0),
-        Text("Get in touch with thousands of users all over the world."
-            " View their URLs and get the opportunity to check their Github pages"
-            " for possible collaboration and inspiration.",),
-
-
-      ]
-    );
-  }
 
  void _showFilterDialog(
      BuildContext context, Function(String name, String type, int followers, int following) onFilterChanged){
@@ -289,16 +269,15 @@ class _HomePageState  extends State<HomePage>{
 
 }
 
-
-
-void openSettings(){
-    if (Platform.isAndroid){
-      ('package:android/settings');
-    } else if (Platform.isMacOS){
-      ('App-Prefs:root=WIFI');
-    }
+void openSettings() async {
+  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+  AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+  if (androidInfo.version.sdkInt >= 21) {
+    await launch('android.settings.SETTINGS');
+  } else {
+    throw 'Device does not support settings navigation';
   }
-
+}
 
 
 
