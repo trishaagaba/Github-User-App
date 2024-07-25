@@ -42,46 +42,31 @@ class UserProvider extends ChangeNotifier{
     _location = null;
     _resetPagination();
     fetchUsers(_location, _name, _currentPage, _pageSize);
+    // _hasMore = false;
   }
 
 
-
-
   Future<void> fetchUsers(String? location, String? name, int page, int pageSize)async {
-    if (_isLoading) return;
-
-    await Future.delayed(const Duration(milliseconds: 500));
-    //_setLoading(true);
-   //notifyListeners();
+    // _setLoading(true);
     try {
       final newUsers = await _getUsersUseCase.execute(
           _location, _name, _currentPage, _pageSize);
-      if (newUsers.isEmpty) {
-        _hasMore = false;
 
-      } else {
-
-        final existingUserIds = _users.map((user) => user.name).toSet();
-        final uniqueNewUsers = newUsers.where((user) => !existingUserIds.contains(user.name)).toList();
-
-        if (uniqueNewUsers.isNotEmpty) {
+      final existingUserIds = _users.map((user) => user.name).toSet();
+      final uniqueNewUsers = newUsers.where((user) => !existingUserIds.contains(user.name)).toList();
           _users.addAll(uniqueNewUsers);
 
-        }
         _currentPage++;
-        _hasMore = true;
+        _hasMore = newUsers.length == _pageSize;
         _setHasSearched(true);
         print("real: $newUsers");
-      }
+
     }
       catch(e){
-      _isLoading = false;
         _hasMore = false;
         print('Error fetching users22: $e');
-
     }
-
-    _isLoading = false;
+    _setLoading(false);
     notifyListeners();
   }
 
@@ -92,6 +77,11 @@ class UserProvider extends ChangeNotifier{
 
   void _setLoading(bool isLoading) {
     _isLoading = isLoading;
+    notifyListeners();
+  }
+
+  void setHasMore(bool isLoading) {
+    _hasMore = hasMore;
     notifyListeners();
   }
 

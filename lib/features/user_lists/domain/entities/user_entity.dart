@@ -9,22 +9,14 @@ class UserEntity extends Equatable{
   final String ? name;
   final String ? url;
   final String ? avatar_url;
-  final String ? email;
-  final int ? followers;
-  final int ? following;
   final String ? type;
-  final String ? bio;
 
   //define the constructor of  the class with these fields
   const UserEntity({
     this.avatar_url,
     this.url,
     this.type,
-    this.followers,
-    this.email,
-    this.following,
     this.name,
-    this.bio
 
   });
 
@@ -35,10 +27,7 @@ class UserEntity extends Equatable{
       name,
       avatar_url,
       type,
-      email,
       url,
-      following,
-      followers
     ];
   }
 }

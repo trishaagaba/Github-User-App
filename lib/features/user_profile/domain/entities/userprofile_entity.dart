@@ -6,10 +6,11 @@ class UserProfileEntity extends Equatable{
   //define the Objects we need
   final String ? name;
   final String ? url;
-  final String ? type;
   final int ? public_repos;
+  final String ? type;
   final String ? avatarUrl;
   final int ? followers;
+  final String ? location;
   final String ? email;
   final int ? following;
   final String ? bio;
@@ -21,6 +22,7 @@ const UserProfileEntity({
   this.type,
   this.public_repos,
   this.followers,
+  this.location,
   this.email,
   this.following,
   this.name,
@@ -36,9 +38,12 @@ const UserProfileEntity({
       avatarUrl,
       url,
       bio,
+      location,
       email,
       following,
+      public_repos,
       followers
     ];
   }
+
 }
