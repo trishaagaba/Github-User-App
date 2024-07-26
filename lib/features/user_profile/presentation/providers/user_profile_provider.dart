@@ -8,7 +8,6 @@ class UserProfileProvider extends ChangeNotifier {
   UserProfileProvider(this._userDetailsUsecase);
 
  UserProfileEntity? _user;
-
   UserProfileEntity? get user => _user;
 
   Future<void> fetchUserProfile(String username) async {

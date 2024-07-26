@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Web App',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
+          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFD1BBCC)),
           useMaterial3: true,
         ),
         home: const WelcomePage(),

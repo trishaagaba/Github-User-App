@@ -93,6 +93,7 @@ flutter:
     - assets/geolocator.jpg
     - assets/
     - assets/geo.jpg
+    - assets/spash.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

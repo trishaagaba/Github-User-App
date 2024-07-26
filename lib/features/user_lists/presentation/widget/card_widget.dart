@@ -9,7 +9,7 @@ Widget cardWidget(context, index){
   final userProvider = Provider.of<UserProvider>(context);
 
   return Card(
-      color: const Color(0xFFE3D8E0),
+      color: const Color(0xFFFFFFFF),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0)),
       margin: const EdgeInsets.symmetric(vertical: 4.0),

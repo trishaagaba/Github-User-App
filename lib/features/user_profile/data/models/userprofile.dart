@@ -1,19 +1,17 @@
-// import 'package:git_user_app/features/user_lists/domain/entities/user_entity.dart';
 import 'package:git_user_app/features/user_profile/domain/entities/userprofile_entity.dart';
-
 
 class UserProfileModel extends UserProfileEntity {
   const UserProfileModel({
-    final String ? name,
-    final String ? email,
-    final String ? url,
-    final String ? type,
-    final String ? bio,
-    final String ? location,
-    final int ? public_repos,
-    final String ? avatarUrl,
-    final int ? followers,
-    final int ? following,
+    super.name,
+    super.email,
+    super.url,
+    super.type,
+    super.bio,
+    super.location,
+    super.public_repos,
+    super.avatarUrl,
+    super.followers,
+    super.following,
   });
 
   factory UserProfileModel.fromJson(Map <String, dynamic> map){

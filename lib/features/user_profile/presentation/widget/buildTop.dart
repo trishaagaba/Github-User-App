@@ -26,7 +26,7 @@ Widget BuildTop(UserProfileEntity user, context){
           top: 20,
           left: 10,
           child: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             color: Colors.white70,
             onPressed: () {
               Navigator.of(context).pop();
@@ -37,7 +37,7 @@ Widget BuildTop(UserProfileEntity user, context){
           top: 20,
           right: 10,
           child: IconButton(
-            icon: Icon(Icons.share),
+            icon: const Icon(Icons.share),
             color: Colors.white70,
             onPressed: () {
               Share.share('Check out this profile: Name: ${user.name},Github link: ${user.url}, ');

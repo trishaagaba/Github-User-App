@@ -2,9 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:git_user_app/features/user_lists/domain/entities/user_entity.dart';
 import 'package:git_user_app/features/user_lists/domain/usecases/get_users_useCase.dart';
 
-
-
-class UserProvider extends ChangeNotifier{
+class UserProvider extends ChangeNotifier {
   final GetUsersUseCase _getUsersUseCase;
 
   UserProvider(this._getUsersUseCase);
@@ -19,58 +17,56 @@ class UserProvider extends ChangeNotifier{
 
   List<UserEntity> get users => _users;
 
-
   bool get isLoading => _isLoading;
-  bool get hasSearched => _hasSearched;
-  bool get hasMore => _hasMore;
 
+  bool get hasSearched => _hasSearched;
+
+  bool get hasMore => _hasMore;
 
   static const _pageSize = 20;
   int _currentPage = 0;
 
   // String get location => _location;
 
-  void setLocation(String location){
+  void setLocation(String location) {
     _location = location;
     _name = null;
     _resetPagination();
     fetchUsers(_location, _name, _currentPage, _pageSize);
   }
 
-  void setName(String name){
+  void setName(String name) {
     _name = name;
     _location = null;
     _resetPagination();
     fetchUsers(_location, _name, _currentPage, _pageSize);
-    // _hasMore = false;
   }
 
-
-  Future<void> fetchUsers(String? location, String? name, int page, int pageSize)async {
-    // _setLoading(true);
+  Future<void> fetchUsers(
+      String? location, String? name, int page, int pageSize) async {
     try {
       final newUsers = await _getUsersUseCase.execute(
           _location, _name, _currentPage, _pageSize);
 
       final existingUserIds = _users.map((user) => user.name).toSet();
-      final uniqueNewUsers = newUsers.where((user) => !existingUserIds.contains(user.name)).toList();
-          _users.addAll(uniqueNewUsers);
+      final uniqueNewUsers = newUsers
+          .where((user) => !existingUserIds.contains(user.name))
+          .toList();
+      _users.addAll(uniqueNewUsers);
 
-        _currentPage++;
-        _hasMore = newUsers.length == _pageSize;
-        _setHasSearched(true);
-        print("real: $newUsers");
-
-    }
-      catch(e){
-        _hasMore = false;
-        print('Error fetching users22: $e');
+      _currentPage++;
+      _hasMore = newUsers.length == _pageSize;
+      _setHasSearched(true);
+      print("real: $newUsers");
+    } catch (e) {
+      _hasMore = false;
+      print('Error fetching users22: $e');
     }
     _setLoading(false);
     notifyListeners();
   }
 
-  void _setUsers(List<UserEntity> users){
+  void _setUsers(List<UserEntity> users) {
     _users = users;
     notifyListeners();
   }
@@ -90,13 +86,13 @@ class UserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  void clearFilters(){
+  void clearFilters() {
     _setUsers(_originalUsers);
     _hasSearched = false;
     notifyListeners();
   }
 
-  void clearSearch(){
+  void clearSearch() {
     _setUsers([]);
     _setHasSearched(false);
     notifyListeners();
@@ -111,7 +107,8 @@ class UserProvider extends ChangeNotifier{
     _hasMore = true;
     notifyListeners();
   }
-  void _resetPagination(){
+
+  void _resetPagination() {
     _setUsers([]);
     _currentPage = 0;
     _hasMore = true;
@@ -123,5 +120,4 @@ class UserProvider extends ChangeNotifier{
     _name = null;
     notifyListeners();
   }
-
 }
