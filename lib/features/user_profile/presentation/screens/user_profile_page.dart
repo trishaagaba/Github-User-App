@@ -7,7 +7,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../user_lists/presentation/providers/connectivity_provider.dart';
 
 class UserProfilePage extends StatelessWidget {
-
   final UserProfileEntity user;
   const UserProfilePage({super.key, required this.user});
 
@@ -22,7 +21,6 @@ class UserProfilePage extends StatelessWidget {
       appBar:
           AppBar(
           centerTitle: true,
-          // titleTextStyle:  TextStyle,
           title: Text(user.name ?? "", textAlign: TextAlign.center,),
           backgroundColor: const Color(0xFFE3D8E0),
           actions: [
@@ -94,14 +92,11 @@ class UserProfilePage extends StatelessWidget {
                                 const Text("Public Repos", style: TextStyle(fontSize: 10 ))
                               ],
                             ),]
-
-                        // style: const TextStyle(fontSize: 16),
                       ),
-                      // const SizedBox(height: 20),
                     ],
                   )
               ),
-              Container(
+               Container(
       child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -121,7 +116,7 @@ class UserProfilePage extends StatelessWidget {
               ElevatedButton(
                 onPressed: (){
                   _launchUrl
-                (Text("${user.url}") as String, context);
+                (user.url ?? "", context);
                 },
                 style: TextButton.styleFrom(backgroundColor: const Color(0xFF624C63)),
                 child: const Padding(
@@ -146,7 +141,6 @@ class UserProfilePage extends StatelessWidget {
       if (await canLaunchUrl(uri)) {
         await launchUrl(uri);
       }else {
-        // Handle case when the URL cannot be launched
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Could not launch $url')),
         );
@@ -157,12 +151,9 @@ class UserProfilePage extends StatelessWidget {
       );
       print(e);
     }}else {
-      // Handle case when the URL is not absolute
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Invalid URL')),
       );
     }
-        // Show an error message if the URL cannot be launched
-
       }
 }

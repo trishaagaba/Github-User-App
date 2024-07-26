@@ -3,7 +3,6 @@
 import 'package:equatable/equatable.dart';
 
 class UserProfileEntity extends Equatable{
-  //define the Objects we need
   final String ? name;
   final String ? url;
   final int ? public_repos;
@@ -15,7 +14,7 @@ class UserProfileEntity extends Equatable{
   final int ? following;
   final String ? bio;
 
-  //define the constructor of  the class with these fields
+
 const UserProfileEntity({
   this.avatarUrl,
   this.url,

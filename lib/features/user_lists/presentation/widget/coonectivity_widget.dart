@@ -1,7 +1,9 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:android_intent_plus/android_intent.dart';
+
+
 
 Widget connectivityWidget(context){
   return Scaffold(
@@ -23,14 +25,13 @@ Widget connectivityWidget(context){
                     actions: [
                       TextButton(
                         onPressed: () {
-                          openSettings();
+                          Navigator.pop(context);
                         },
                         child: const Text("Cancel"),
                       ),
                       TextButton(
                         onPressed: () {
                           Navigator.pop(context);
-                          // Redirect to phone settings
                           openSettings();
                         },
                         child: const Text("Settings"),
@@ -51,9 +52,15 @@ Widget connectivityWidget(context){
 void openSettings() async {
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+
   if (androidInfo.version.sdkInt >= 21) {
-    await launch('android.settings.SETTINGS');
+    const AndroidIntent intent = AndroidIntent(
+      action: 'android.settings.SETTINGS',
+    );
+    await intent.launch();
   } else {
     throw 'Device does not support settings navigation';
   }
 }
+
+

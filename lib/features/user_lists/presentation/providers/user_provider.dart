@@ -26,8 +26,6 @@ class UserProvider extends ChangeNotifier {
   static const _pageSize = 20;
   int _currentPage = 0;
 
-  // String get location => _location;
-
   void setLocation(String location) {
     _location = location;
     _name = null;
