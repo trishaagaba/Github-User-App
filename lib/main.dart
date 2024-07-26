@@ -1,5 +1,15 @@
 import 'package:flutter/material.dart';
-import "welcome_page.dart";
+import 'package:git_user_app/features/user_profile/data/repository/userprofile_rep_imp.dart';
+import 'package:git_user_app/features/user_profile/domain/usecases/userdetails_usecase.dart';
+import 'package:provider/provider.dart';
+import 'features/user_lists/data/datasources/remote/data_source.dart';
+import 'features/user_lists/data/repository/user_repository_impl.dart';
+import 'features/user_lists/domain/usecases/get_users_useCase.dart';
+import 'features/user_lists/presentation/providers/user_provider.dart';
+import 'features/user_lists/presentation/providers/connectivity_provider.dart';
+import 'features/user_lists/presentation/screens/splash.dart';
+import 'features/user_profile/data/datasources/details_source.dart';
+import 'features/user_profile/presentation/providers/user_profile_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -8,20 +18,31 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner : false,
-      title: 'Github Users App',
+    final dataSource = DataSource();
+    final userRepository = UserRepositoryImpl(dataSource);
+    final getUsersUseCase = GetUsersUseCase(userRepository);
 
-      theme: ThemeData(
+    final detailsSource = DetailsSource();
+    final userProfileRep = UserprofileRepImp(detailsSource);
+    final userDetailsUseCase = UserdetailsUsecase(userProfileRep);
 
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
-        useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserProvider(getUsersUseCase)),
+        ChangeNotifierProvider(create: (_) => ConnectivityProvider()),
+        ChangeNotifierProvider(create: (_) => UserProfileProvider(userDetailsUseCase)),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Web App',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFD1BBCC)),
+          useMaterial3: true,
+        ),
+        home: const WelcomePage(),
       ),
-      home: const WelcomePage()
     );
   }
 }
-
