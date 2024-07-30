@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:git_user_app/features/user_profile/data/repository/userprofile_rep_imp.dart';
-import 'package:git_user_app/features/user_profile/domain/usecases/userdetails_usecase.dart';
+import 'package:git_user_app/features/user_profile/data/repository/user_profile_rep_imp.dart';
+import 'package:git_user_app/features/user_profile/domain/usecases/user_details_usecase.dart';
 import 'package:provider/provider.dart';
 import 'features/user_lists/data/datasources/remote/data_source.dart';
 import 'features/user_lists/data/repository/user_repository_impl.dart';
@@ -30,9 +30,11 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => UserProvider(getUsersUseCase)),
+        ChangeNotifierProvider(
+            create: (context) => UserProvider(getUsersUseCase)),
         ChangeNotifierProvider(create: (_) => ConnectivityProvider()),
-        ChangeNotifierProvider(create: (_) => UserProfileProvider(userDetailsUseCase)),
+        ChangeNotifierProvider(
+            create: (_) => UserProfileProvider(userDetailsUseCase)),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

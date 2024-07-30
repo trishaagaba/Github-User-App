@@ -8,14 +8,12 @@ class UserRepositoryImpl implements UserRepository {
 
   UserRepositoryImpl(this._dataSource);
 
-@override
-  Future<List<UserEntity>> getUsers(String? location ,String? name, int page, int pageSize) async {
-    List<UserModel> userModels =  await _dataSource.fetchUsersByLocation(location,name, page, pageSize);
+  @override
+  Future<List<UserEntity>> getUsers(
+      String? location, String? name, int page, int pageSize) async {
+    List<UserModel> userModels =
+        await _dataSource.fetchUsersByLocation(location, name, page, pageSize);
 
-  return userModels.map((userModel) => userModel.toEntity()).toList();
-
-
+    return userModels.map((userModel) => userModel.toEntity()).toList();
   }
 }
-
-
