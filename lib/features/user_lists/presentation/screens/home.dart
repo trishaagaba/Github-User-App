@@ -44,15 +44,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
-  void dispose() {
-    _scrollController.dispose();
-    _locationController.dispose();
-    _nameController.dispose();
-
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
     final connectivityProvider = Provider.of<ConnectivityProvider>(context);
@@ -89,49 +80,55 @@ class _HomePageState extends State<HomePage> {
               ),
               Padding(
                   padding: const EdgeInsets.only(
-                      left: 20.0, top: 10.0, right: 20.0, bottom: 10.0),
-                  child: Column(children: [
-                    TextField(
-                      controller: _locationController,
-                      decoration: InputDecoration(
-                          labelText: 'Search by location',
-                          enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black12),
-                          ),
-                          suffixIcon: IconButton(
-                              icon: const Icon(
-                                Icons.clear,
-                                color: Colors.black38,
-                                size: 20,
-                              ),
-                              onPressed: () {
-                                _locationController.clear();
-                                userProvider.clearFiltersAndSearch();
-                              })),
-                      onSubmitted: (value) {
-                        userProvider.setLocation(value);
-                      },
-                    ),
-                    const SizedBox(height: 8),
-                    TextField(
-                        controller: _nameController,
+                      left: 10.0, top: 10.0, right: 10.0, bottom: 10.0),
+                  child: Row(children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _locationController,
                         decoration: InputDecoration(
-                            labelText: 'Search by name',
+                            labelText: 'Search by location',
+                            labelStyle: const TextStyle(fontSize: 14.0),
                             enabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.black12,
-                              ),
+                              borderSide: BorderSide(color: Colors.black12),
                             ),
                             suffixIcon: IconButton(
-                                icon: const Icon(Icons.clear,
-                                    color: Colors.black38, size: 20),
+                                icon: const Icon(
+                                  Icons.clear,
+                                  color: Colors.black38,
+                                  size: 15,
+                                ),
                                 onPressed: () {
-                                  _nameController.clear();
+                                  _locationController.clear();
                                   userProvider.clearFiltersAndSearch();
                                 })),
                         onSubmitted: (value) {
-                          userProvider.setName(value);
-                        }),
+                          userProvider.setLocation(value);
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: TextField(
+                          controller: _nameController,
+                          decoration: InputDecoration(
+                              labelText: 'Search by name',
+                              labelStyle: const TextStyle(fontSize: 14.0),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.black12,
+                                ),
+                              ),
+                              suffixIcon: IconButton(
+                                  icon: const Icon(Icons.clear,
+                                      color: Colors.black38, size: 15),
+                                  onPressed: () {
+                                    _nameController.clear();
+                                    userProvider.clearFiltersAndSearch();
+                                  })),
+                          onSubmitted: (value) {
+                            userProvider.setName(value);
+                          }),
+                    ),
                   ])),
               Expanded(
                 child: Padding(
@@ -149,12 +146,9 @@ class _HomePageState extends State<HomePage> {
                               itemBuilder: (context, index) {
                                 print(
                                     'List length: ${userProvider.users.length}, Current index: $index');
-                                // if(index ==userProvider.users.length ) {
-                                //   CircularProgressIndicator();
-                                  return cardWidget(context, index);
-                                }
-  // }
-  )
+                                return cardWidget(context, index);
+                              }
+                              )
                           : const Center(
                               child: CircularProgressIndicator(),
                             ),
@@ -163,5 +157,14 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ));
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _locationController.dispose();
+    _nameController.dispose();
+
+    super.dispose();
   }
 }

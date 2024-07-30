@@ -1,10 +1,10 @@
-import 'package:git_user_app/features/user_profile/domain/entities/userprofile_entity.dart';
+import 'package:git_user_app/features/user_profile/domain/entities/user_profile_entity.dart';
 
 class UserProfileModel extends UserProfileEntity {
   const UserProfileModel({
     super.name,
     super.email,
-    super.url,
+    super.html_url,
     super.type,
     super.bio,
     super.location,
@@ -14,10 +14,10 @@ class UserProfileModel extends UserProfileEntity {
     super.following,
   });
 
-  factory UserProfileModel.fromJson(Map <String, dynamic> map){
+  factory UserProfileModel.fromJson(Map<String, dynamic> map) {
     return UserProfileModel(
       name: map['login'] ?? "",
-      url: map['url'] ?? "",
+      html_url: map['html_url'] ?? "",
       bio: map['bio'] ?? '',
       public_repos: map['public_repos'] ?? 0,
       location: map['location'] ?? '',
@@ -26,13 +26,13 @@ class UserProfileModel extends UserProfileEntity {
       avatarUrl: map['avatar_url'] ?? "",
       followers: map['followers'] ?? 0,
       following: map['following'] ?? 0,
-
     );
   }
 
   UserProfileEntity toProfileEntity() {
     return UserProfileEntity(
       name: name,
+      html_url: html_url,
       avatarUrl: avatarUrl,
       bio: bio,
       public_repos: public_repos,
@@ -41,9 +41,6 @@ class UserProfileModel extends UserProfileEntity {
       email: email,
       followers: followers,
       following: following,
-
-
     );
   }
-
 }

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
-class ConnectivityProvider extends ChangeNotifier{
+class ConnectivityProvider extends ChangeNotifier {
   ConnectivityResult _connectivityResult = ConnectivityResult.none;
   bool _isConnected = false;
 
-  ConnectivityProvider(){
+  ConnectivityProvider() {
     _checkConnectivity();
-    Connectivity().onConnectivityChanged.listen((ConnectivityResult result){
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       _updateConnectionStatus(result);
     });
   }
@@ -24,5 +24,4 @@ class ConnectivityProvider extends ChangeNotifier{
     _isConnected = _connectivityResult != ConnectivityResult.none;
     notifyListeners();
   }
-
 }

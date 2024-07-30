@@ -3,9 +3,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:android_intent_plus/android_intent.dart';
 
-
-
-Widget connectivityWidget(context){
+Widget connectivityWidget(context) {
   return Scaffold(
     appBar: AppBar(
       centerTitle: true,
@@ -62,5 +60,3 @@ void openSettings() async {
     throw 'Device does not support settings navigation';
   }
 }
-
-
