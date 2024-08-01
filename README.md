@@ -2,8 +2,11 @@
 
 ## Introduction
 
-This is an app called Github Users that lets you search about Github users from all over the world and view the different profiles of these users.
-The main goal of this app is to let users get in touch with each other and have easier access to each other's profiles. It aims to solve the inability of users to reach out to each other via Github.
+This is an app called Github Users that lets you search about Github users from all over the world
+and view the different profiles of these users.
+The main goal of this app is to let users get in touch with each other and have easier access to
+each other's profiles. It aims to solve the inability of users to reach out to each other via
+Github.
 
 ## Features
 
@@ -64,21 +67,25 @@ Instructions on how to run the app on an emulator or a physical device.
 
 ## Usage
 
-When the app is launched on the screen of the device, you are navigated to the Home Page after the Splash screen has been displayed.
-From there, a list of Github users is displayed from which you can scroll. To search for a specific country, you can search using the 'Search Location' button,
-while to search for a specific user, you can search using the 'Search Name' button. From thereon, you can select a user's name to navigate to their profile page which displays
-various information such as the country or number of public repositories. You can even choose to be redirected to the user's profile or can even share the user's details.
+When the app is launched on the screen of the device, you are navigated to the Home Page after the
+Splash screen has been displayed.
+From there, a list of Github users is displayed from which you can scroll. To search for a specific
+country, you can search using the 'Search Location' button,
+while to search for a specific user, you can search using the 'Search Name' button. From thereon,
+you can select a user's name to navigate to their profile page which displays
+various information such as the country or number of public repositories. You can even choose to be
+redirected to the user's profile or can even share the user's details.
 
 ## Screenshots
 
 Below are some screenshots of the application.
 
-![Splash screen](C:\Users\TRISHA\Pictures\Screenshots\Screenshot (99).png)
-![Home Page](C:\Users\TRISHA\Pictures\Screenshots\Screenshot (100).png)
-![User Profile](C:\Users\TRISHA\Pictures\Screenshots\Screenshot (101).png)
-![Share Profile](C:\Users\TRISHA\Pictures\Screenshots\Screenshot (102).png)
-![Search Location](C:\Users\TRISHA\Pictures\Screenshots\Screenshot (103).png)
-![Search User](C:\Users\TRISHA\Pictures\Screenshots\Screenshot (104).png)
+![Splash screen](assets/Screenshot (99).png)
+![Home Page](assets/Screenshot (100).png)
+![User Profile](assets/Screenshot (101).png)
+![Share Profile](assets/Screenshot (102).png)
+![Search Location](assets/Screenshot (103).png)
+![Search User](assets/Screenshot (104).png)
 
 ## Contributing
 

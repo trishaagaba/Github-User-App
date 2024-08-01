@@ -25,7 +25,7 @@ class UserProfilePage extends StatelessWidget {
         title: Text(
           user.name ?? "",
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFF624C63),
         actions: [
