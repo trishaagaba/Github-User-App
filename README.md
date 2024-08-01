@@ -80,12 +80,12 @@ redirected to the user's profile or can even share the user's details.
 
 Below are some screenshots of the application.
 
-![Splash screen](assets/Screenshot (99).png)
-![Home Page](assets/Screenshot (100).png)
-![User Profile](assets/Screenshot (101).png)
-![Share Profile](assets/Screenshot (102).png)
-![Search Location](assets/Screenshot (103).png)
-![Search User](assets/Screenshot (104).png)
+![Splash screen](assets/imgHome.png)
+![Home Page](assets/imgHome.png)
+![User Profile](assets/imgProfile.png)
+![Share Profile](assets/imgShare.png)
+![Search Location](assets/imgSearchLoc.png)
+![Search User](assets/imgSearchUser.png)
 
 ## Contributing
 
