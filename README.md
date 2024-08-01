@@ -80,7 +80,7 @@ redirected to the user's profile or can even share the user's details.
 
 Below are some screenshots of the application.
 
-![Splash screen](assets/imgHome.png)
+![Splash screen](assets/imgSplash.png)
 ![Home Page](assets/imgHome.png)
 ![User Profile](assets/imgProfile.png)
 ![Share Profile](assets/imgShare.png)
