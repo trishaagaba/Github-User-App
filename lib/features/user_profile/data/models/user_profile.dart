@@ -1,5 +1,9 @@
 import 'package:git_user_app/features/user_profile/domain/entities/user_profile_entity.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'user_profile.g.dart';
+
+@JsonSerializable()
 class UserProfileModel extends UserProfileEntity {
   const UserProfileModel({
     super.name,
@@ -14,20 +18,21 @@ class UserProfileModel extends UserProfileEntity {
     super.following,
   });
 
-  factory UserProfileModel.fromJson(Map<String, dynamic> map) {
-    return UserProfileModel(
-      name: map['login'] ?? "",
-      html_url: map['html_url'] ?? "",
-      bio: map['bio'] ?? '',
-      public_repos: map['public_repos'] ?? 0,
-      location: map['location'] ?? '',
-      type: map['type'] ?? '',
-      email: map['email'] ?? "",
-      avatarUrl: map['avatar_url'] ?? "",
-      followers: map['followers'] ?? 0,
-      following: map['following'] ?? 0,
-    );
-  }
+  factory UserProfileModel.fromJson(Map<String, dynamic> map) => _$UserProfileModelFromJson(map);
+  // {
+    // return UserProfileModel(
+    //   name: map['login'] ?? "",
+    //   html_url: map['html_url'] ?? "",
+    //   bio: map['bio'] ?? '',
+    //   public_repos: map['public_repos'] ?? 0,
+    //   location: map['location'] ?? '',
+    //   type: map['type'] ?? '',
+    //   email: map['email'] ?? "",
+    //   avatarUrl: map['avatar_url'] ?? "",
+    //   followers: map['followers'] ?? 0,
+    //   following: map['following'] ?? 0,
+    // );
+  // }
 
   UserProfileEntity toProfileEntity() {
     return UserProfileEntity(
