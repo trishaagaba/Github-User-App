@@ -82,19 +82,19 @@ Below are some screenshots of the application.
 
 
 ## Home Page
-<img src="assets/homescr.png" alt="Home Page" width="350" height= "600"/>
+<img src="assets/homescr.png" alt="Home Page" width="300" height= "600"/>
 
 ## User Profile
-<img src="assets/profilescr.png" alt="User Profile" width="350" height= "600"/>
+<img src="assets/profilescr.png" alt="User Profile" width="300" height= "600"/>
 
 ## Share Profile
-<img src="assets/sharescr.png" alt="Share Profile" width="350" height= "600"/>
+<img src="assets/sharescr.png" alt="Share Profile" width="300" height= "600"/>
 
 ## Search Location
-<img src = "assets/locscr.png" alt = "Search Location" width = "350" height= "600"/>
+<img src = "assets/locscr.png" alt = "Search Location" width = "300" height= "600"/>
 
 ## Search User
-<img src="assets/namescr.png" alt="Search User" width="350" height= "600"/>
+<img src="assets/namescr.png" alt="Search User" width="300" height= "600"/>
 
 ## Contributing
 
