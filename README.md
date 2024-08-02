@@ -45,11 +45,11 @@ Step-by-step instructions on how to install the project.
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-username/your-repo.git
+   git clone https://github.com/trishaagaba/Github-User-App
    ```
 2. Navigate to the project directory:
    ```sh
-   cd your-repo
+   cd Github-User-App
    ```
 3. Install dependencies:
    ```sh
@@ -100,14 +100,10 @@ Below are some screenshots of the application.
 
 Guidelines for contributing to the project.
 
-## Contributing
-
-Guidelines for contributing to the project.
-
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+2. Create your feature branch (`git checkout -b ft_amazing_feature`)
+3. Commit your changes (`git commit -m 'feature(addfeature) : add some amazing feature'`)
+4. Push to the branch (`git push origin ft_amazing_feature`)
 5. Open a pull request
 
 ## Contact
