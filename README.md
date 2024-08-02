@@ -11,9 +11,9 @@ Github.
 ## Features
 
 The key features of my application are the following;
--List of users all over the world
--Pagination on the list of users
--Search buttons to search either by location or name
+* List of users all over the world
+* Pagination on the list of users
+* Search buttons to search either by location or name
 
 ## Getting Started
 
