@@ -81,11 +81,24 @@ redirected to the user's profile or can even share the user's details.
 Below are some screenshots of the application.
 
 
-![Home Page](assets/homescr.png)
-![User Profile](assets/profilescr.png)
-![Share Profile](assets/sharescr.png)
-![Search Location](assets/locscr.png)
-![Search User](assets/namescr.png)
+## Home Page
+<img src="assets/homescr.png" alt="Home Page" width="400"/>
+
+## User Profile
+<img src="assets/profilescr.png" alt="User Profile" width="400"/>
+
+## Share Profile
+<img src="assets/sharescr.png" alt="Share Profile" width="400"/>
+
+## Search Location
+<img src="assets/locscr.png" alt="Search Location" width="400"/>
+
+## Search User
+<img src="assets/namescr.png" alt="Search User" width="400"/>
+
+## Contributing
+
+Guidelines for contributing to the project.
 
 ## Contributing
 
