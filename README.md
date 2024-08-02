@@ -82,13 +82,9 @@ Below are some screenshots of the application.
 
 
 ![Home Page](assets/homescr.png)
-
 ![User Profile](assets/profilescr.png)
-
 ![Share Profile](assets/sharescr.png)
-
 ![Search Location](assets/locscr.png)
-
 ![Search User](assets/namescr.png)
 
 ## Contributing
