@@ -19,17 +19,3 @@ UserProfileModel _$UserProfileModelFromJson(Map<String, dynamic> json) =>
       followers: (json['followers'] as num?)?.toInt(),
       following: (json['following'] as num?)?.toInt(),
     );
-
-Map<String, dynamic> _$UserProfileModelToJson(UserProfileModel instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'html_url': instance.html_url,
-      'public_repos': instance.public_repos,
-      'type': instance.type,
-      'avatarUrl': instance.avatarUrl,
-      'followers': instance.followers,
-      'location': instance.location,
-      'email': instance.email,
-      'following': instance.following,
-      'bio': instance.bio,
-    };

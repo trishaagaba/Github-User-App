@@ -11,9 +11,12 @@ Github.
 ## Features
 
 The key features of my application are the following;
-* List of users all over the world
-* Pagination on the list of users
-* Search buttons to search either by location or name
+- Search Functionality: Search for GitHub users by username or location.
+- User Details: View detailed information about a specific user.
+- Internet Connectivity Handling: Detect and handle changes in internet connectivity, with prompts to guide users.
+- Clean Architecture Implementation: Structured codebase for better maintainability and scalability.
+- Infinite scroll pagination: Scroll through github users as it retrieves more.
+- Share user profile: Share the user profile link to other social media apps.
 
 ## Getting Started
 

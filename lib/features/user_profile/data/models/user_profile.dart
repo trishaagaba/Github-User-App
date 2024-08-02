@@ -18,21 +18,8 @@ class UserProfileModel extends UserProfileEntity {
     super.following,
   });
 
-  factory UserProfileModel.fromJson(Map<String, dynamic> map) => _$UserProfileModelFromJson(map);
-  // {
-    // return UserProfileModel(
-    //   name: map['login'] ?? "",
-    //   html_url: map['html_url'] ?? "",
-    //   bio: map['bio'] ?? '',
-    //   public_repos: map['public_repos'] ?? 0,
-    //   location: map['location'] ?? '',
-    //   type: map['type'] ?? '',
-    //   email: map['email'] ?? "",
-    //   avatarUrl: map['avatar_url'] ?? "",
-    //   followers: map['followers'] ?? 0,
-    //   following: map['following'] ?? 0,
-    // );
-  // }
+  factory UserProfileModel.fromJson(Map<String, dynamic> map) =>
+      _$UserProfileModelFromJson(map);
 
   UserProfileEntity toProfileEntity() {
     return UserProfileEntity(
