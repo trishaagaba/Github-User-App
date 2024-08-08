@@ -30,18 +30,8 @@ To run this application, ensure to have the following tools installed and runnin
 - Android Studio or VsCode
 - Flutter plugin
 - Dart plugin
-- Any other dependencies such as;
-    * http: ^1.2.1
-    * provider: ^6.1.2
-    * share: ^2.0.4
-    * json_annotation: ^4.9.0
-    * url_launcher: ^6.3.0
-    * infinite_scroll_pagination: ^4.0.0
-    * connectivity_plus : ^2.3.0
-    * shared_preferences : ^2.0.9
-    * device_info_plus: ^9.0.0
-    * android_intent_plus: ^3.0.1
-
+- Any other dependencies
+ 
 ### Installation
 
 Step-by-step instructions on how to install the project.

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:git_user_app/features/user_lists/domain/entities/user_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
