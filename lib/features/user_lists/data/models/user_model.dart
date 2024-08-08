@@ -14,8 +14,6 @@ class UserModel extends UserEntity {
 
   factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
-  // Map<String, dynamic> toJson => _$UserToJson(this);
-
   UserEntity toEntity() {
     return UserEntity(
       name: name,
