@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
                       child: TextField(
                         controller: _locationController,
                         decoration: InputDecoration(
-                            labelText: 'Search by location',
+                            labelText: 'Search location',
                             labelStyle: const TextStyle(fontSize: 14.0),
                             enabledBorder: const OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.black12),
@@ -111,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                       child: TextField(
                           controller: _nameController,
                           decoration: InputDecoration(
-                              labelText: 'Search by name',
+                              labelText: 'Search name',
                               labelStyle: const TextStyle(fontSize: 14.0),
                               enabledBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(

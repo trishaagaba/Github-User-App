@@ -3,8 +3,7 @@ import 'dart:convert';
 import '../../models/user_model.dart';
 
 class DataSource {
-  Future<List<UserModel>> fetchUsersByLocation(
-      String? location, String? name, int page, int pageSize) async {
+  Future<List<UserModel>> fetchUsersByLocation(String? location, String? name, int page, int pageSize) async {
     String url = (name != null)
         ? "https://api.github.com/search/users?q=$name"
         : "https://api.github.com/search/users?q=location:$location&page=$page&per_page=$pageSize";
