@@ -12,7 +12,6 @@ Github.
 
 The key features of my application are the following;
 - Search Functionality: Search for GitHub users by username or location.
-- User Details: View detailed information about a specific user.
 - Internet Connectivity Handling: Detect and handle changes in internet connectivity, with prompts to guide users.
 - Clean Architecture Implementation: Structured codebase for better maintainability and scalability.
 - Infinite scroll pagination: Scroll through github users as it retrieves more.
@@ -30,7 +29,7 @@ To run this application, ensure to have the following tools installed and runnin
 - Android Studio or VsCode
 - Flutter plugin
 - Dart plugin
-- Any other dependencies
+
  
 ### Installation
 
@@ -60,14 +59,14 @@ Instructions on how to run the app on an emulator or a physical device.
 
 ## Usage
 
-When the app is launched on the screen of the device, you are navigated to the Home Page after the
-Splash screen has been displayed.
-From there, a list of Github users is displayed from which you can scroll. To search for a specific
-country, you can search using the 'Search Location' button,
-while to search for a specific user, you can search using the 'Search Name' button. From thereon,
-you can select a user's name to navigate to their profile page which displays
-various information such as the country or number of public repositories. You can even choose to be
-redirected to the user's profile or can even share the user's details.
+When the app is launched on the screen of the device,
+* The Splash is displayed
+* You are then navigated to the Home Page
+* A list of Github Users is then displayed
+* Using the 'Search Location' button, users of a specific country can be searched for.
+* Using the 'Search Name' button, a specific user can be searched for.
+* On clicking a user's name, you navigate to the user's profile
+* On selecting the Share icon, the user's details can be shared.
 
 ## Screenshots
 
